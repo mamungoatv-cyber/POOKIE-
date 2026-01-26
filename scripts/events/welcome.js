@@ -1,132 +1,96 @@
-const { getTime, drive } = global.utils;
-if (!global.temp.welcomeEvent)
-	global.temp.welcomeEvent = {};
+const axios = require("axios");
+const { createCanvas, loadImage, registerFont } = require("canvas");
+const fs = require("fs-extra");
+const path = require("path");
 
 module.exports = {
-	config: {
-		name: "welcome",
-		version: "1.7",
-		author: "Amit Max ",
-		category: "events"
-	},
+    config: {
+        name: "welcome",
+        version: "5.0",
+        author: "xalman",
+        category: "events"
+    },
 
-	langs: {
-		vi: {
-			session1: "sáng",
-			session2: "trưa",
-			session3: "chiều",
-			session4: "tối",
-			welcomeMessage: "Cảm ơn bạn đã mời tôi vào nhóm!\nPrefix bot: %1\nĐể xem danh sách lệnh hãy nhập: %1help",
-			multiple1: "bạn",
-			multiple2: "các bạn",
-			defaultWelcomeMessage: "Xin chào {userName}.\nChào mừng bạn đến với {boxName}.\nChúc bạn có buổi {session} vui vẻ!"
-		},
-		en: {
-			session1: "morning",
-			session2: "noon",
-			session3: "afternoon",
-			session4: "evening",
-			welcomeMessage: "☄️ ᴛʜᴀɴᴋ ʏᴏᴜ ꜰᴏʀ ɪɴᴠɪᴛɪɴɢ ᴍᴇ ᴛᴏ ᴛʜᴇ ɢʀᴏᴜᴘ!\n✨ ʙᴏᴛ ᴘʀᴇꜰɪx: %1\n🦋 ᴛᴏ ᴠɪᴇᴡ ᴛʜᴇ ʟɪꜱᴛ ᴏꜰ ᴄᴏᴍᴍᴀɴᴅ, ᴘʟᴇᴀꜱᴇ ᴇɴᴛᴇʀ: %1help",
-			multiple1: "you",
-			multiple2: "you guys",
-			defaultWelcomeMessage: ` ʜᴇʟʟᴏ, Dear {userName}.\n 🌷ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ {multiple} {boxName}\n 😽ɪ ʜᴏᴘᴇ ʏᴏᴜ ᴡɪʟʟ ꜰᴏʟʟᴏᴡ ᴏᴜʀ ɢʀᴏᴜᴘ ʀᴜʟᴇꜱ ᴘʀᴏᴘᴇʀʟʏ. - ʜᴀᴠᴇ ᴀ ɴɪᴄᴇ {session}  -ꔫ 🌊👀✰`
-		}
-	},
+    onStart: async ({ threadsData, message, event, api }) => {
+        if (event.logMessageType !== "log:subscribe") return;
 
-	onStart: async ({ threadsData, message, event, api, getLang }) => {
-		if (event.logMessageType == "log:subscribe")
-			return async function () {
-				const hours = getTime("HH");
-				const { threadID } = event;
-				const { nickNameBot } = global.GoatBot.config;
-				const prefix = global.utils.getPrefix(threadID);
-				const dataAddedParticipants = event.logMessageData.addedParticipants;
-				// if new member is bot
-				if (dataAddedParticipants.some((item) => item.userFbId == api.getCurrentUserID())) {
-					if (nickNameBot)
-						api.changeNickname(nickNameBot, threadID, api.getCurrentUserID());
-					return message.send(getLang("welcomeMessage", prefix));
-				}
-				// if new member:
-				if (!global.temp.welcomeEvent[threadID])
-					global.temp.welcomeEvent[threadID] = {
-						joinTimeout: null,
-						dataAddedParticipants: []
-					};
+        const { threadID, author } = event;
+        const dataAddedParticipants = event.logMessageData.addedParticipants;
 
-				// push new member to array
-				global.temp.welcomeEvent[threadID].dataAddedParticipants.push(...dataAddedParticipants);
-				// if timeout is set, clear it
-				clearTimeout(global.temp.welcomeEvent[threadID].joinTimeout);
+        if (dataAddedParticipants.some((item) => item.userFbId == api.getCurrentUserID())) return;
 
-				// set new timeout
-				global.temp.welcomeEvent[threadID].joinTimeout = setTimeout(async function () {
-					const threadData = await threadsData.get(threadID);
-					if (threadData.settings.sendWelcomeMessage == false)
-						return;
-					const dataAddedParticipants = global.temp.welcomeEvent[threadID].dataAddedParticipants;
-					const dataBanned = threadData.data.banned_ban || [];
-					const threadName = threadData.threadName;
-					const userName = [],
-						mentions = [];
-					let multiple = false;
+        const threadData = await threadsData.get(threadID);
+        const threadName = threadData.threadName || "Our Group";
+        const threadInfo = await api.getThreadInfo(threadID);
+        const memberCount = threadInfo.participantIDs.length;
+		
+        const inviterInfo = await api.getUserInfo(author);
+        const inviterName = inviterInfo[author].name;
 
-					if (dataAddedParticipants.length > 1)
-						multiple = true;
+        const backgrounds = [
+            "https://i.ibb.co/DPCX3TRH/3bf31bd6449c.jpg",
+            "https://i.ibb.co/JWyDVPJk/42a541cc5021.jpg",
+            "https://i.ibb.co/VWj5xLWR/6641a83f9935.jpg",
+            "https://i.ibb.co/HDBBGLyX/a69de460fad6.jpg"
+        ];
 
-					for (const user of dataAddedParticipants) {
-						if (dataBanned.some((item) => item.id == user.userFbId))
-							continue;
-						userName.push(user.fullName);
-						mentions.push({
-							tag: user.fullName,
-							id: user.userFbId
-						});
-					}
-					// {userName}:   name of new member
-					// {multiple}:
-					// {boxName}:    name of group
-					// {threadName}: name of group
-					// {session}:    session of day
-					if (userName.length == 0) return;
-					let { welcomeMessage = getLang("defaultWelcomeMessage") } =
-						threadData.data;
-					const form = {
-						mentions: welcomeMessage.match(/\{userNameTag\}/g) ? mentions : null
-					};
-					welcomeMessage = welcomeMessage
-						.replace(/\{userName\}|\{userNameTag\}/g, userName.join(", "))
-						.replace(/\{boxName\}|\{threadName\}/g, threadName)
-						.replace(
-							/\{multiple\}/g,
-							multiple ? getLang("multiple2") : getLang("multiple1")
-						)
-						.replace(
-							/\{session\}/g,
-							hours <= 10
-								? getLang("session1")
-								: hours <= 12
-									? getLang("session2")
-									: hours <= 18
-										? getLang("session3")
-										: getLang("session4")
-						);
+        for (const user of dataAddedParticipants) {
+            try {
+                const canvas = createCanvas(1000, 500);
+                const ctx = canvas.getContext("2d");
+                const bgLink = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+                const background = await loadImage(bgLink);
+                ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+                ctx.roundRect(50, 50, 900, 400, 30);
+                ctx.fill();
+                ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+                ctx.stroke();
 
-					form.body = welcomeMessage;
+                const userAvatarUrl = `https://graph.facebook.com/${user.userFbId}/picture?width=512&height=512&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`;
+                const uAvatar = await loadImage(userAvatarUrl).catch(() => loadImage("https://i.imgur.com/6eSrt9al.png"));
 
-					if (threadData.data.welcomeAttachment) {
-						const files = threadData.data.welcomeAttachment;
-						const attachments = files.reduce((acc, file) => {
-							acc.push(drive.getFile(file, "stream"));
-							return acc;
-						}, []);
-						form.attachment = (await Promise.allSettled(attachments))
-							.filter(({ status }) => status == "fulfilled")
-							.map(({ value }) => value);
-					}
-					message.send(form);
-					delete global.temp.welcomeEvent[threadID];
-				}, 1500);
-			};
-	}
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(500, 180, 100, 0, Math.PI * 2);
+                ctx.lineWidth = 6;
+                ctx.strokeStyle = "#fff";
+                ctx.shadowColor = "#fff";
+                ctx.shadowBlur = 20;
+                ctx.stroke();
+                ctx.clip();
+                ctx.drawImage(uAvatar, 400, 80, 200, 200);
+                ctx.restore();
+                ctx.textAlign = "center";
+                ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
+                ctx.shadowBlur = 10;
+				
+                const grad = ctx.createLinearGradient(400, 0, 600, 0);
+                grad.addColorStop(0, "#00d2ff");
+                grad.addColorStop(1, "#92fe9d");
+                
+                ctx.fillStyle = grad;
+                ctx.font = "bold 70px Impact, sans-serif"; 
+                ctx.fillText("WELCOME", 500, 330);
+                ctx.fillStyle = "#ffffff";
+                ctx.font = "500 40px 'Segoe UI', Arial, sans-serif";
+                ctx.fillText(user.fullName, 500, 385);
+                ctx.font = "bold 22px Courier New";
+                ctx.fillStyle = "#FFCC00";
+                ctx.fillText(`YOU ARE THE #${memberCount} MEMBER|  INVITED BY: ${inviterName.toUpperCase()}`, 500, 430);
+
+                const imgPath = path.join(__dirname, "cache", `w_${user.userFbId}.png`);
+                fs.writeFileSync(imgPath, canvas.toBuffer());
+
+                message.send({
+                    body: `🎉  welcome  ${user.fullName}!\n━━━━━━━━━━━━━━━━━━\n✨ Added by: ${inviterName}\n📊 You are the  ${memberCount} member`,
+                    attachment: fs.createReadStream(imgPath)
+                }, () => fs.unlinkSync(imgPath));
+
+            } catch (err) {
+                console.error(err);
+                message.send(`Welcome ${user.fullName}!`);
+            }
+        }
+    }
 };
