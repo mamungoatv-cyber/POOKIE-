@@ -19,7 +19,7 @@ module.exports = {
   },
 
   onStart: async function ({ message, getLang }) {
-    const link = "https://github.com/goatbotnx";
+    const link = "https://github.com/mamungoatv-cyber/POOKIE-.git";
     return message.reply(getLang("current", link));
   }
 };
