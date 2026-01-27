@@ -1,5 +1,5 @@
 <p align="center">
-  "<img src="./images/profile.png" width="300" />"="MAMUN">
+  "<img src=". />"="MAMUN">
   <br>
   <a href="https://www.facebook.com/share/14V9BD88uRH/.2.0" target="_blank">
     <img src="https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white" />
