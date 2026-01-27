@@ -6,7 +6,7 @@ module.exports = {
     name: 'uptime2',
     aliases: ['upt2', 'up2'],
     version: '1.6',
-    author: 'xalman', /*create by siyuu full fixed and modified by xalman*/
+    author: '亗🅼🅰ᥫᩣ🅼ᥫᩣ🆄🅽×͜×', /*create by siyuu full fixed and modified by xalman*/
     countDown: 15,
     role: 0,
     shortDescription: 'Display bot uptime',
