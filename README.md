@@ -1,15 +1,15 @@
 <p align="center">
-  "<img src="./images/profile.png" width="300" />" width="150" height="150" style="border-radius: 50%; border: 3px solid #7000ff;" alt="Xalman Hossain">
+  "<img src="./images/profile.png" width="300" />"="MAMUN">
   <br>
-  <a href="https://www.facebook.com/nx210.2.0" target="_blank">
+  <a href="https://www.facebook.com/share/14V9BD88uRH/.2.0" target="_blank">
     <img src="https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white" />
   </a>
-  <a href="https://wa.me/8801876118312" target="_blank">
+  <a href="https://wa.me/88018730981279" target="_blank">
     <img src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" />
   </a>
 </p>
 
-<h1 align="center">🐐 GOAT-BOT-V2</h1>
+<h1 align="center">MAMUN-GOAT-V2</h1>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Maintained%3F-Yes-green.svg?style=for-the-badge" />
@@ -25,7 +25,7 @@
 ---
 
 ## 👨‍💻 Developed By
-**Xalman Hossain** *Passionate Developer | Bot Specialist |*
+**亗🅼🅰ᥫᩣ🅼ᥫᩣ🆄🅽×͜×** *Passionate Developer | Bot Specialist |*
 
 ---
 
@@ -39,7 +39,7 @@
 ---
 
 ## 🛠️ Installation Guide
-1. **Clone the project:** `git clone https://github.com/goatbotnx/GOAT-BOT-V2.git`
+1. **Clone the project:** `git clone `
 2. **Install dependencies:** `npm install`
 3. **Launch the bot:** `node index.js`
 
