@@ -1,5 +1,5 @@
 <p align="center">
-  <img="" width="150" height="150" style="border-radius: 50%; border: 3px solid #7000ff;" alt="Xalman Hossain">
+  "<img src="./images/profile.png" width="300" />" width="150" height="150" style="border-radius: 50%; border: 3px solid #7000ff;" alt="Xalman Hossain">
   <br>
   <a href="https://www.facebook.com/nx210.2.0" target="_blank">
     <img src="https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white" />
