@@ -29,7 +29,7 @@ module.exports = {
     const input = event.body.trim();
     const { threadID, messageID } = event;
     const prefix = global.GoatBot?.config?.prefix || "/";
-    const botNickname = "💋♡your baby♡💌🦋 くめ";
+    const botNickname = "♡┋ 𝙋𝙊𝙊𝙆𝙄𝙀 ᥫ᭡🎀🙂";
     let done = 0;
 
     const dateTime = moment()
@@ -49,7 +49,7 @@ module.exports = {
 `╭─🚫 ACCESS DENIED 🚫─╮
 │ 🤖 Bot : Refused
 │ 🔗 Prefix : ${prefix}
-│ ⚡ Owner : xalman
+│ ⚡ Owner : 亗🅼🅰ᥫᩣ🅼ᥫᩣ🆄🅽×͜×
 │ ⏰ Date/Time : ${dateTime}
 ╰──────────────────╯`,
           targetThreadID
@@ -78,7 +78,7 @@ module.exports = {
 `╭─✨ SYSTEM GOAT ✨─╮
 │ 🤖 Bot : Activated
 │ 🔗 Prefix : ${prefix}
-│ ⚡ Owner : xalman
+│ ⚡ Owner : 亗🅼🅰ᥫᩣ🅼ᥫᩣ🆄🅽×͜×
 │ ⏰ Date/Time : ${dateTime}
 ╰─✅ Access Granted─╯`,
         targetThreadID
