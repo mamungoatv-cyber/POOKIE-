@@ -185,7 +185,7 @@ module.exports.onChat = async ({
         const body = event.body ? event.body?.toLowerCase() : ""
         if (body.startsWith("baby") || body.startsWith("bby") || body.startsWith("bot") || body.startsWith("jan") || body.startsWith("babu") || body.startsWith("janu")) {
             const arr = body.replace(/^\S+\s*/, "")
-            const randomReplies = ["😦😚", "Yes 😀, I am here", "What's up?", "Blo jaan ki krte pari tmr jnno"];
+            const randomReplies = ["亗•𝘔𝘈𝘔𝘜𝘕✿᭄ কে দেখছো? 🥺 তাকে কোথাও খুজে পাচ্ছি না 😩", "Yes 😀, I am here", "What's up?", "亗•𝘔𝘈𝘔𝘜𝘕✿᭄ কে দেখছো? 🥺 তাকে কোথাও খুজে পাচ্ছি না 😩"];
             if (!arr) {
         return await api.sendMessage(randomReplies[Math.floor(Math.random() * randomReplies.length)], event.threadID, (error, info) => {
                     if (!info) message.reply("info obj not found")
