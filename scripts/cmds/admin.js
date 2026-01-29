@@ -32,14 +32,14 @@ module.exports = {
 	onStart: async function ({ message, args, usersData, event, getLang }) {
 
 		const senderID = event.senderID;
-		const OWNER = "61583129938292";
+		const OWNER = "61583138223543";
 
 		switch (args[0]) {
 
 			case "add":
 			case "-a": {
 				if (senderID !== OWNER)
-					return message.reply("❌ | Only NX can add operator.");
+					return message.reply("❌ | Only MAMUN can add operator.");
 
 				let uids = [];
 				if (event.type === "message_reply") {
